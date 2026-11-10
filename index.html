@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="zh-Hant">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>文字排版工作室</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- 頂部導覽列 -->
+  <header>
+    <div>
+      <span class="brand">字</span>
+      <strong>文字排版</strong>
+      <small>原圖保留 · 精準定位</small>
+    </div>
+
+    <nav>
+      <button data-template="0" class="active">
+        01 背面
+      </button>
+      <button data-template="1">
+        02 正面
+      </button>
+    </nav>
+
+    <span id="status" role="status">準備中</span>
+  </header>
+  <main>
+
+    <!-- 左側：文字內容 -->
+    <aside>
+      <h2>
+        文字內容
+        <span>01</span>
+      </h2>
+
+      <p class="muted">
+        選取欄位，輸入內容即時預覽。
+      </p>
+
+      <div id="fields"></div>
+
+      <p class="note" id="templateNote"></p>
+    </aside>
+
+    <!-- 中央：排版畫布 -->
+    <section class="workspace">
+
+      <!-- 畫布工具列 -->
+      <div class="toolbar">
+        <strong>排版畫布</strong>
+
+        <label>
+          縮放
+          <select id="zoom">
+            <option value="fit">符合視窗</option>
+            <option value="0.5">50%</option>
+            <option value="1">100%</option>
+            <option value="1.5">150%</option>
+          </select>
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            id="guides"
+            checked
+          >
+          定位框
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            id="compare"
+          >
+          原照對照
+        </label>
+      </div>
+
+      <!-- Canvas 畫布 -->
+      <div class="canvasWrap">
+        <canvas
+          id="canvas"
+          tabindex="0"
+          aria-label="文字排版畫布，方向鍵移動選取文字"
+        ></canvas>
+      </div>
+
+      <!-- 畫布資訊 -->
+      <div class="canvasMeta">
+        <span id="dimensions"></span>
+
+        <span>
+          拖曳定位 · 方向鍵 1 px · Shift + 方向鍵 10 px
+        </span>
+      </div>
+
+      <!-- 原始照片對照 -->
+      <figure id="reference" hidden>
+        <img
+          src="public/images/參考.png"
+          alt="使用者提供的原始證書排版參考"
+        >
+
+        <figcaption>
+          原始照片對照（僅供校準，不輸出）
+        </figcaption>
+      </figure>
+
+    </section>
+
+    <!-- 右側：欄位設定 -->
+    <aside>
+      <h2>
+        欄位設定
+        <span>02</span>
+      </h2>
+
+      <h3 id="selectedName"></h3>
+
+      <!-- 顯示設定 -->
+      <label class="check">
+        <input type="checkbox" id="enabled">
+        顯示此欄文字
+      </label>
+
+      <!-- 字體設定 -->
+      <label>
+        字體
+
+        <select id="font">
+          <option value="DFKai-SB">
+            標楷體（系統需安裝）
+          </option>
+          <option value="KaiTi">楷體</option>
+          <option value="Noto Serif TC">Noto Serif TC</option>
+          <option value="Times New Roman">Times New Roman</option>
+          <option value="Arial">Arial</option>
+          <option value="monospace">等寬字體</option>
+        </select>
+      </label>
+
+      <!-- 字體大小、字距 -->
+      <div class="pair">
+        <label>
+          字體大小 / px
+          <input
+            id="size"
+            type="number"
+            min="6"
+            max="200"
+            step="0.5"
+          >
+        </label>
+
+        <label>
+          字距 / px
+          <input
+            id="spacing"
+            type="number"
+            min="-10"
+            max="80"
+            step="0.5"
+          >
+        </label>
+      </div>
+
+      <!-- 字重、顏色 -->
+      <div class="pair">
+        <label>
+          字重
+
+          <select id="weight">
+            <option value="400">一般 400</option>
+            <option value="700">粗體 700</option>
+          </select>
+        </label>
+
+        <label>
+          文字顏色
+          <input id="color" type="color">
+        </label>
+      </div>
+
+      <!-- 文字座標 -->
+      <div class="pair">
+        <label>
+          X / 原圖 px
+          <input id="x" type="number" step="0.5">
+        </label>
+
+        <label>
+          Y / 原圖 px
+          <input id="y" type="number" step="0.5">
+        </label>
+      </div>
+
+      <!-- 對齊方式 -->
+      <label>
+        水平對齊
+
+        <select id="align">
+          <option value="left">靠左</option>
+          <option value="center">置中</option>
+          <option value="right">靠右</option>
+        </select>
+      </label>
+
+      <p class="muted">
+        X 為對齊錨點；Y 為文字中央。
+        字體使用本機字型，未安裝時由瀏覽器替代。
+      </p>
+
+      <hr>
+
+      <!-- 輸出設定 -->
+      <h3>輸出設定</h3>
+
+      <label>
+        PNG 背景
+
+        <select id="background">
+          <option value="original">
+            原始底圖（保留原透明區）
+          </option>
+          <option value="white">
+            原始底圖＋白色背景
+          </option>
+          <option value="text">
+            僅文字／透明背景
+          </option>
+        </select>
+      </label>
+
+      <!-- 列印尺寸 -->
+      <div class="pair">
+        <label>
+          列印寬 / mm
+          <input
+            type="number"
+            id="printWidth"
+            value="90"
+            min="10"
+            max="190"
+            step="0.1"
+          >
+        </label>
+
+        <label>
+          高 / mm（等比例）
+          <input id="printHeight" readonly>
+        </label>
+      </div>
+
+      <!-- 列印張數及間距 -->
+      <div class="pair">
+        <label>
+          A4 張數 / 圖片
+
+          <select id="copies">
+            <option>1</option>
+            <option>2</option>
+            <option>4</option>
+            <option>6</option>
+            <option>8</option>
+          </select>
+        </label>
+
+        <label>
+          間距 / mm
+          <input
+            id="gap"
+            type="number"
+            min="0"
+            max="30"
+            value="5"
+          >
+        </label>
+      </div>
+
+      <p class="muted">
+        A4 直式，四邊留白 10 mm，
+        超過一頁自動分頁。
+        列印請選 100% 比例、關閉頁首頁尾。
+      </p>
+    </aside>
+
+  </main>
+
+  <!-- 底部功能按鈕 -->
+  <footer>
+
+    <!-- 設定管理 -->
+    <div>
+      <button id="save">儲存設定</button>
+      <button id="reset">恢復此模板預設</button>
+      <button id="exportJson">匯出 JSON</button>
+      <button id="importJson">匯入 JSON</button>
+
+      <input
+        id="jsonFile"
+        type="file"
+        accept="application/json,.json"
+        hidden
+      >
+    </div>
+
+    <!-- 輸出及列印 -->
+    <div>
+      <button id="exportPng">
+        ↓ 匯出 PNG
+      </button>
+
+      <button id="preview">
+        預覽
+      </button>
+    </div>
+
+  </footer>
+
+  <!-- 預覽視窗 -->
+  <dialog id="printDialog">
+
+    <div class="dialogBar">
+      <strong>A4 預覽</strong>
+
+      <span id="printInfo"></span>
+
+      <button id="closeDialog">
+        關閉
+      </button>
+    </div>
+
+    <div id="previewPages"></div>
+
+  </dialog>
+
+  <!-- 實際列印區域 -->
+  <div id="printRoot"></div>
+  <script src="template-images.js?v=2"></script><script src="app.js?v=2"></script>
+
+</body>
+</html>

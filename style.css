@@ -1,0 +1,614 @@
+
+/* ========================================
+   01. 全域設定
+======================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", "Microsoft JhengHei", sans-serif;
+  color: #23352e;
+  background: #f4f6f3;
+  font-size: 14px;
+}
+
+strong {
+  font-size: 16px;
+}
+
+small,
+.muted,
+.canvasMeta {
+  color: #758179;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+
+/* ========================================
+   02. 頂部導覽列
+======================================== */
+
+header {
+  min-height: 84px;
+  background: #fff;
+  border-bottom: 1px solid #dde4dc;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 18px 26px;
+  gap: 20px;
+}
+
+header > div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+header small {
+  display: block;
+}
+
+.brand {
+  display: grid;
+  place-items: center;
+
+  background: #244d3c;
+  color: white;
+
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+
+  font-size: 23px;
+}
+
+nav {
+  display: flex;
+  gap: 6px;
+
+  background: #f0f3ee;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+#status {
+  font-size: 12px;
+  color: #53745c;
+}
+
+
+/* ========================================
+   03. 按鈕與表單基礎樣式
+======================================== */
+
+button,
+select,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+
+  border: 1px solid #d4ddd4;
+  border-radius: 7px;
+
+  padding: 9px 13px;
+
+  background: white;
+  color: #34493d;
+}
+
+button:hover {
+  background: #eaf1e8;
+}
+
+button.active,
+.primary {
+  background: #27513e;
+  color: #fff;
+  border-color: #27513e;
+}
+
+label {
+  display: block;
+
+  font-size: 12px;
+  color: #647268;
+
+  margin: 12px 0;
+}
+
+input:not([type=checkbox]),
+select {
+  width: 100%;
+  min-width: 0;
+
+  border: 1px solid #d8e0d6;
+  border-radius: 6px;
+
+  padding: 8px;
+  margin-top: 6px;
+
+  background: #fcfdfb;
+  color: #243c2e;
+}
+
+input:focus,
+select:focus {
+  outline: 2px solid #93b89a;
+  outline-offset: 1px;
+}
+
+input[type=color] {
+  height: 35px;
+  padding: 3px;
+}
+
+
+/* ========================================
+   04. 主畫面三欄排版
+======================================== */
+
+main {
+  display: grid;
+
+  grid-template-columns:
+    250px
+    minmax(340px, 1fr)
+    268px;
+
+  min-height: calc(100vh - 160px);
+}
+
+
+/* ========================================
+   05. 左右側邊欄
+======================================== */
+
+aside {
+  background: #fff;
+  padding: 24px 20px;
+}
+
+aside:first-child {
+  border-right: 1px solid #e1e7df;
+}
+
+aside:last-child {
+  border-left: 1px solid #e1e7df;
+}
+
+h2 {
+  font-size: 16px;
+  margin: 0 0 12px;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+h2 span {
+  color: #a1b39e;
+  font-size: 12px;
+}
+
+h3 {
+  font-size: 14px;
+  margin: 18px 0 12px;
+}
+
+
+/* ========================================
+   06. 左側文字輸入欄位
+======================================== */
+
+.field {
+  border-left: 3px solid transparent;
+
+  padding: 1px 8px;
+  margin: 4px -8px;
+}
+
+.field.selected {
+  border-color: #356344;
+  background: #f1f6ee;
+}
+
+.field label {
+  margin: 8px 0;
+}
+
+.note {
+  background: #f4f4e9;
+  color: #77764e;
+
+  padding: 12px;
+
+  line-height: 1.7;
+  font-size: 12px;
+}
+
+
+/* ========================================
+   07. 右側欄位設定
+======================================== */
+
+.pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.pair label {
+  margin: 8px 0;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #e5e9e2;
+
+  margin: 22px 0;
+}
+
+
+/* ========================================
+   08. 中央排版工作區
+======================================== */
+
+.workspace {
+  padding: 22px;
+  min-width: 0;
+}
+
+
+/* 畫布上方工具列 */
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.toolbar label {
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+  margin: 0;
+}
+
+.toolbar select {
+  width: auto;
+  margin: 0;
+}
+
+
+/* ========================================
+   09. Canvas 畫布容器
+======================================== */
+
+.canvasWrap {
+  display: block;
+
+  overflow: auto;
+
+  max-height: 70vh;
+  min-height: 300px;
+
+  background-color: #e5e9e3;
+
+  background-image:
+    linear-gradient(
+      45deg,
+      #dce2da 25%,
+      transparent 25%
+    ),
+    linear-gradient(
+      -45deg,
+      #dce2da 25%,
+      transparent 25%
+    ),
+    linear-gradient(
+      45deg,
+      transparent 75%,
+      #dce2da 75%
+    ),
+    linear-gradient(
+      -45deg,
+      transparent 75%,
+      #dce2da 75%
+    );
+
+  background-size: 20px 20px;
+
+  background-position:
+    0 0,
+    0 10px,
+    10px -10px,
+    -10px 0;
+
+  border: 1px solid #d7dfd4;
+  border-radius: 10px;
+
+  padding: 20px;
+}
+
+
+/* Canvas 本體 */
+
+canvas {
+  display: block;
+
+  touch-action: none;
+  max-width: none;
+
+  outline: none;
+}
+
+canvas:focus {
+  outline: 2px solid #85a786;
+}
+
+
+/* 畫布下方資訊 */
+
+.canvasMeta {
+  display: flex;
+  justify-content: space-between;
+
+  gap: 10px;
+  margin-top: 12px;
+}
+
+
+/* ========================================
+   10. 原始圖片對照區域
+======================================== */
+
+figure {
+  margin: 24px 0;
+
+  background: #fff;
+  border: 1px solid #dce3d7;
+  border-radius: 8px;
+
+  padding: 16px;
+}
+
+figure img {
+  max-width: 100%;
+  max-height: 300px;
+}
+
+figcaption {
+  font-size: 12px;
+  color: #76816f;
+
+  margin-top: 8px;
+}
+
+
+/* ========================================
+   11. 底部功能操作列
+======================================== */
+
+footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  gap: 12px;
+
+  background: white;
+  border-top: 1px solid #dce4d8;
+
+  padding: 16px 24px;
+}
+
+footer > div {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 8px;
+}
+
+
+/* ========================================
+   12. A4 列印預覽視窗
+======================================== */
+
+dialog {
+  border: 0;
+  border-radius: 12px;
+
+  background: #e5e9e4;
+
+  max-width: 95vw;
+  max-height: 94vh;
+
+  padding: 20px;
+}
+
+dialog::backdrop {
+  background: #10291d88;
+}
+
+.dialogBar {
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+
+/* ========================================
+   13. A4 紙張設定
+======================================== */
+
+.sheet {
+  width: 210mm;
+  height: 297mm;
+
+  background: white;
+
+  position: relative;
+  overflow: hidden;
+
+  margin: 0 auto 20px;
+
+  box-shadow: 0 3px 16px #0002;
+}
+
+.sheet img {
+  position: absolute;
+  display: block;
+}
+
+#printRoot {
+  display: none;
+}
+
+
+/* ========================================
+   14. 平板響應式設定
+======================================== */
+
+@media (max-width: 1100px) {
+
+  main {
+    grid-template-columns:
+      220px
+      minmax(300px, 1fr);
+  }
+
+  aside:last-child {
+    grid-column: 1 / -1;
+    display: block;
+  }
+
+  header {
+    flex-wrap: wrap;
+  }
+
+  header small {
+    display: none;
+  }
+
+}
+
+
+/* ========================================
+   15. 手機響應式設定
+======================================== */
+
+@media (max-width: 700px) {
+
+  main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .workspace {
+    order: -1;
+  }
+
+  .canvasWrap {
+    min-height: 0;
+  }
+
+  aside {
+    padding: 18px;
+  }
+
+  footer {
+    position: static;
+  }
+
+  .sheet {
+    margin-left: 0;
+  }
+
+  .dialogBar {
+    flex-wrap: wrap;
+  }
+
+}
+
+
+/* ========================================
+   16. A4 頁面設定
+======================================== */
+
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+
+/* ========================================
+   17. 實際列印樣式
+======================================== */
+
+@media print {
+
+  html,
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+
+    background: white;
+  }
+
+  /* 隱藏網站操作介面 */
+
+  body > header,
+  body > main,
+  body > footer,
+  body > dialog {
+    display: none !important;
+  }
+
+  /* 僅顯示列印內容 */
+
+  #printRoot {
+    display: block !important;
+  }
+
+  /* A4 紙張 */
+
+  .sheet {
+    margin: 0;
+    box-shadow: none;
+
+    break-after: page;
+    page-break-after: always;
+  }
+
+
+  .sheet:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+}
